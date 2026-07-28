@@ -40,7 +40,7 @@ class QRBuilderProperties(PropertyGroup):
         name="Panel Thickness", default=0.12, min=0.01, soft_max=1.0, unit='LENGTH'
     )
     panel_frame_width: FloatProperty(
-        name="Frame Width", default=0.14, min=0.01, soft_max=1.0, unit='LENGTH'
+        name="Frame Width", default=0.126, min=0.01, soft_max=1.0, unit='LENGTH'
     )
     reflector_inset: FloatProperty(
         name="Reflector Inset", default=0.05, min=0.0, soft_max=0.5, unit='LENGTH'
@@ -77,10 +77,10 @@ class QRBuilderProperties(PropertyGroup):
     generate_structure: BoolProperty(name="Generate Hub and Arms", default=True)
     arm_count: IntProperty(name="Arm Count", default=6, min=3, max=24)
     hub_radius: FloatProperty(
-        name="Hub Radius", default=0.72, min=0.05, soft_max=5.0, unit='LENGTH'
+        name="Hub Radius", default=0.792, min=0.05, soft_max=5.0, unit='LENGTH'
     )
     hub_height: FloatProperty(
-        name="Hub Height", default=0.42, min=0.03, soft_max=5.0, unit='LENGTH'
+        name="Hub Height", default=0.336, min=0.03, soft_max=5.0, unit='LENGTH'
     )
     hub_ring_height: FloatProperty(
         name="Hub Ring Height", default=0.15, min=0.01, soft_max=1.0, unit='LENGTH'
@@ -126,6 +126,13 @@ class QRBuilderProperties(PropertyGroup):
     rail_height: FloatProperty(
         name="Rail Height", default=0.07, min=0.005, soft_max=0.5, unit='LENGTH'
     )
+    truss_bays: IntProperty(
+        name="Truss Bays",
+        description="Number of alternating Warren-truss web bays per support arm",
+        default=6,
+        min=2,
+        max=16,
+    )
     channel_width: FloatProperty(
         name="Channel Width", default=0.14, min=0.02, soft_max=1.0, unit='LENGTH'
     )
@@ -135,16 +142,16 @@ class QRBuilderProperties(PropertyGroup):
 
     generate_mounts: BoolProperty(name="Mount Blocks", default=True)
     mount_length: FloatProperty(
-        name="Mount Length", default=0.42, min=0.05, soft_max=2.0, unit='LENGTH'
+        name="Mount Length", default=0.357, min=0.05, soft_max=2.0, unit='LENGTH'
     )
     mount_width_scale: FloatProperty(
-        name="Mount Width Scale", default=1.28, min=0.5, max=3.0
+        name="Mount Width Scale", default=1.09, min=0.5, max=3.0
     )
     mount_height: FloatProperty(
-        name="Mount Height", default=0.24, min=0.03, soft_max=1.0, unit='LENGTH'
+        name="Mount Height", default=0.204, min=0.03, soft_max=1.0, unit='LENGTH'
     )
     clamp_height: FloatProperty(
-        name="Clamp Height", default=0.10, min=0.01, soft_max=0.5, unit='LENGTH'
+        name="Clamp Height", default=0.085, min=0.01, soft_max=0.5, unit='LENGTH'
     )
 
     generate_gussets: BoolProperty(name="Gussets", default=True)
@@ -173,6 +180,30 @@ class QRBuilderProperties(PropertyGroup):
     brace_height: FloatProperty(
         name="Brace Height", default=0.10, min=0.01, soft_max=1.0, unit='LENGTH'
     )
+
+
+    generate_flight_hardware: BoolProperty(
+        name="Flight Hardware",
+        description="Generate feed horn, mounting interface, bolts and cable harness",
+        default=True,
+    )
+    generate_mounting_interface: BoolProperty(name="Mounting Interface", default=True)
+    flange_radius_scale: FloatProperty(name="Flange Radius Scale", default=1.22, min=0.8, max=2.0)
+    flange_height: FloatProperty(name="Flange Height", default=0.16, min=0.03, soft_max=1.0, unit='LENGTH')
+    flange_bolt_count: IntProperty(name="Flange Bolts", default=12, min=4, max=32)
+    flange_bolt_radius: FloatProperty(name="Bolt Radius", default=0.032, min=0.005, soft_max=0.15, unit='LENGTH')
+    flange_bolt_circle_scale: FloatProperty(name="Bolt Circle", default=0.76, min=0.35, max=0.92)
+
+    generate_feed_assembly: BoolProperty(name="Feed Assembly", default=True)
+    feed_height: FloatProperty(name="Feed Height", default=0.82, min=0.15, soft_max=4.0, unit='LENGTH')
+    feed_horn_radius: FloatProperty(name="Horn Radius", default=0.23, min=0.04, soft_max=1.0, unit='LENGTH')
+    feed_horn_length: FloatProperty(name="Horn Length", default=0.34, min=0.08, soft_max=2.0, unit='LENGTH')
+    feed_strut_count: IntProperty(name="Feed Struts", default=3, min=3, max=6)
+    feed_strut_width: FloatProperty(name="Feed Strut Width", default=0.045, min=0.01, soft_max=0.25, unit='LENGTH')
+
+    generate_cable_harness: BoolProperty(name="Cable Harness", default=True)
+    cable_radius: FloatProperty(name="Cable Radius", default=0.022, min=0.004, soft_max=0.10, unit='LENGTH')
+    cable_clamp_count: IntProperty(name="Cable Clamps", default=5, min=2, max=16)
 
     diagnostic_logging: BoolProperty(
         name="Diagnostic Logging",

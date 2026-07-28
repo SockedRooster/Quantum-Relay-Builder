@@ -52,3 +52,21 @@
 - Clamped gusset length to the available support-arm span.
 - Added assembly-radius, empty-geometry and parenting validation.
 - Added effective arm length and validation warning count to build reports.
+
+## v2.3.1 — Sprint 6.3.1 Structural Truss Upgrade
+
+- Replaced the twin-rail support arms with tapered Warren trusses.
+- Added alternating diagonal titanium web members and hub/ring end ties.
+- Added adjustable rail width, rail height, and truss bay count controls.
+- Preserved the raised centreline energy conduit.
+- Applied the 20% reflector scale to all stock presets.
+- Flattened and widened the hub for improved proportions.
+- Reduced default mount and clamp dimensions by approximately 15%.
+- Reduced default panel frame width by approximately 10%.
+- Updated build metadata and diagnostic reporting to v2.3.1.
+
+## 2.4.0 - Sprint 6.4 Flight Hardware Integration
+- Added mounting flange, adapter collar, bolt circle and umbilical ports.
+- Added feed horn, waveguide, secondary reflector and tripod supports.
+- Added cable harness with periodic clamps.
+- Added configurable Flight Hardware UI section.

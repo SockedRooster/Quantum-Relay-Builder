@@ -1,0 +1,10 @@
+Sprint 6.4 - Flight Hardware Integration
+
+- Added standalone KSP-style mounting flange and adapter collar.
+- Added configurable bolt circle and electrical umbilical ports.
+- Added central feed horn, waveguide mast, secondary reflector and tripod supports.
+- Added visible energy cable harness and cable clamps along one truss.
+- Kept the generated asset as a relay payload part, not a complete spacecraft.
+- Added separate, animation-friendly object names for base, feed, supports and cabling.
+- Added Flight Hardware controls to the Blender sidebar.
+- Version bumped to 2.4.0.

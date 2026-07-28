@@ -14,7 +14,7 @@ class QR_PT_builder(Panel):
         props = context.scene.qr_builder
 
         layout.label(text=BUILD_LABEL)
-        layout.label(text="Raised twin-rail support framework", icon='MESH_DATA')
+        layout.label(text="KSP-ready relay payload hardware", icon='MESH_DATA')
 
         family = layout.box()
         family.label(text="Relay Family")
@@ -63,6 +63,9 @@ class QR_PT_builder(Panel):
         column.prop(props, "arm_thickness")
         column.prop(props, "arm_gap")
         column.prop(props, "arm_ring_clearance")
+        column.prop(props, "rail_width")
+        column.prop(props, "rail_height")
+        column.prop(props, "truss_bays")
         column.prop(props, "channel_width")
         column.prop(props, "channel_height")
 
@@ -92,6 +95,36 @@ class QR_PT_builder(Panel):
         braces.prop(props, "brace_radius_scale")
         braces.prop(props, "brace_width")
         braces.prop(props, "brace_height")
+
+
+        hardware = layout.box()
+        hardware.label(text="Flight Hardware", icon='ORIENTATION_GIMBAL')
+        hardware.prop(props, "generate_flight_hardware")
+        hw = hardware.column()
+        hw.enabled = props.generate_structure and props.generate_flight_hardware
+        hw.prop(props, "generate_mounting_interface")
+        mount_hw = hw.column()
+        mount_hw.enabled = props.generate_mounting_interface
+        mount_hw.prop(props, "flange_radius_scale")
+        mount_hw.prop(props, "flange_height")
+        mount_hw.prop(props, "flange_bolt_count")
+        mount_hw.prop(props, "flange_bolt_radius")
+        mount_hw.prop(props, "flange_bolt_circle_scale")
+        hw.separator()
+        hw.prop(props, "generate_feed_assembly")
+        feed_hw = hw.column()
+        feed_hw.enabled = props.generate_feed_assembly
+        feed_hw.prop(props, "feed_height")
+        feed_hw.prop(props, "feed_horn_radius")
+        feed_hw.prop(props, "feed_horn_length")
+        feed_hw.prop(props, "feed_strut_count")
+        feed_hw.prop(props, "feed_strut_width")
+        hw.separator()
+        hw.prop(props, "generate_cable_harness")
+        cable_hw = hw.column()
+        cable_hw.enabled = props.generate_cable_harness
+        cable_hw.prop(props, "cable_radius")
+        cable_hw.prop(props, "cable_clamp_count")
 
         detail = layout.box()
         detail.label(text="Global Detail")

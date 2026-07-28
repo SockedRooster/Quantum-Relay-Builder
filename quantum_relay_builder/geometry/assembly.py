@@ -20,6 +20,7 @@ from .validation import validate_generated_assembly
 from .support_geometry import calculate_support_attachment
 from .support_nodes import build_support_nodes
 from .attachment_brackets import create_attachment_brackets
+from .flight_hardware import create_mounting_interface, create_feed_assembly, create_cable_harness
 from .naming import ROOT
 from ..diagnostics import log_object, write_report
 
@@ -130,16 +131,44 @@ def build_sprint5_assembly(context, props):
             props.bevel_width, titanium, dark, energy,
         ))
 
+        if props.generate_flight_hardware:
+            if props.generate_mounting_interface:
+                create_mounting_interface(
+                    collection=collection, origin=support_origin,
+                    hub_radius=props.hub_radius, hub_height=props.hub_height,
+                    flange_radius_scale=props.flange_radius_scale,
+                    flange_height=props.flange_height,
+                    bolt_count=props.flange_bolt_count,
+                    bolt_radius=props.flange_bolt_radius,
+                    bolt_circle_scale=props.flange_bolt_circle_scale,
+                    bevel_width=props.bevel_width, dark_material=dark,
+                    titanium_material=titanium, registry=registry,
+                )
+            if props.generate_feed_assembly:
+                create_feed_assembly(
+                    collection=collection, origin=support_origin,
+                    hub_radius=props.hub_radius, hub_height=props.hub_height,
+                    ring_height=props.hub_ring_height, feed_height=props.feed_height,
+                    horn_radius=props.feed_horn_radius, horn_length=props.feed_horn_length,
+                    strut_count=props.feed_strut_count, strut_width=props.feed_strut_width,
+                    bevel_width=props.bevel_width, dark_material=dark,
+                    titanium_material=titanium, energy_material=energy, registry=registry,
+                )
+
         registry.extend("arm", create_arm_array_from_nodes(
             collection=collection,
             nodes=support_nodes,
             width_hub=props.arm_width_hub,
             width_outer=props.arm_width_outer,
             thickness=props.arm_thickness,
+            rail_width=props.rail_width,
+            rail_height=props.rail_height,
+            truss_bays=props.truss_bays,
             channel_width=props.channel_width,
             channel_height=props.channel_height,
             bevel_width=props.bevel_width,
             dark_material=dark,
+            titanium_material=titanium,
             energy_material=energy,
         ))
 
@@ -154,6 +183,14 @@ def build_sprint5_assembly(context, props):
             ring_material=dark,
             registry=registry,
         )
+
+        if props.generate_flight_hardware and props.generate_cable_harness:
+            create_cable_harness(
+                collection=collection, nodes=support_nodes,
+                cable_radius=props.cable_radius, clamp_count=props.cable_clamp_count,
+                bevel_width=props.bevel_width, cable_material=energy,
+                clamp_material=titanium, registry=registry,
+            )
 
         arm_top_z = arm_far_centre_z + (props.arm_thickness / 2.0)
         mount_width = props.arm_width_outer * props.mount_width_scale
@@ -201,8 +238,8 @@ def build_sprint5_assembly(context, props):
         log_object(generated_object, root)
 
     registry.diagnostic_log_path = write_report({
-        "version": "2.1.2",
-        "sprint": "6.2.2",
+        "version": "2.4.0",
+        "sprint": "6.4 Flight Hardware Integration",
         "expected_radius": float(expected_radius),
         "effective_arm_length": float(registry.effective_arm_length),
         "arm_start_radius": float(locals().get("arm_start_radius", 0.0)),

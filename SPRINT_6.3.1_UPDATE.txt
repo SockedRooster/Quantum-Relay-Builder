@@ -1,0 +1,11 @@
+Quantum Relay Builder v2.3.1 — Sprint 6.3.1 Structural Truss Upgrade
+
+Install the add-on ZIP from Blender Preferences > Add-ons > Install from Disk.
+Restart Blender after replacing an earlier build so cached Python modules are cleared.
+
+Major changes:
+- Warren-truss support arms with alternating diagonal webs
+- Adjustable truss bay count and chord dimensions
+- 20% reflector scale applied to stock presets
+- Wider/flatter hub proportions
+- Smaller mounts and thinner panel frames
