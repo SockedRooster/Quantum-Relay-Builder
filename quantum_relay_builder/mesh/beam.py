@@ -2,6 +2,7 @@ from mathutils import Vector
 
 from .core import build_indexed_geometry, create_bmesh_object
 from .profiles import get_profile
+from ..diagnostics import log_beam
 
 
 def _beam_frame(start, end, up_hint):
@@ -69,6 +70,7 @@ def create_profile_beam(
     material=None,
     up_hint=(0.0, 0.0, 1.0),
 ):
+    log_beam(name, start, end, profile_id, width, height)
     profile = get_profile(profile_id, width, height)
     vertices, faces = profile_beam_geometry(start, end, profile, up_hint)
 

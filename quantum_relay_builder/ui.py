@@ -96,6 +96,15 @@ class QR_PT_builder(Panel):
         detail.label(text="Global Detail")
         detail.prop(props, "bevel_width")
 
+        diagnostics = layout.box()
+        diagnostics.label(text="Diagnostics", icon='INFO')
+        diagnostics.prop(props, "diagnostic_logging")
+        diagnostic_column = diagnostics.column()
+        diagnostic_column.enabled = props.diagnostic_logging
+        diagnostic_column.prop(props, "diagnostic_length_multiplier")
+        diagnostic_column.label(text="Log saves beside the .blend file")
+        diagnostic_column.label(text="Unsaved files use the system temp folder")
+
         layout.separator()
         layout.operator("qr.build_sprint6", icon='MOD_BUILD')
         layout.operator("qr.clear_generated", icon='TRASH')

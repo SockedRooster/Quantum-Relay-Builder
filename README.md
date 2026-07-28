@@ -1,42 +1,28 @@
 # Quantum Relay Builder
 
-A procedural Blender framework for building the Quantum Relay KSP asset family.
+Procedural Blender framework for generating Quantum Relay spacecraft parts.
 
 ## Current release
 
-v2.0.0 — Sprint 6.0 Procedural Framework
+**v2.0.2 — Sprint 6.1.1 Diagnostic Build**
 
-## Sprint 6 architecture
+This release is built directly on the stable Sprint 6.1 repository. It does not
+change the generated geometry.
 
-The add-on now includes an operator-free BMesh mesh engine:
+### Diagnostic mode
 
-```text
-quantum_relay_builder/
-    mesh/
-        core.py
-        prism.py
-        beam.py
-        profiles.py
-        plate.py
-        cylinder.py
-        ring.py
-```
+Enable **Diagnostic Logging** in the Quantum Relay sidebar before building.
 
-## Features
+The add-on records:
 
-- Reusable BMesh object creation
-- Prism, plate, cylinder, beam and annular-ring generators
-- Box, diamond and hexagonal beam profiles
-- Profile-based cross braces
-- QR-100, QR-250 and QR-500 family presets
-- Build-time object and topology statistics
-- Existing reflector, hub, arms, mounts, gussets and edge-ring features
-- No `bpy.ops` dependency during mesh construction
+- Every beam start and end coordinate
+- Calculated beam direction and length
+- Profile dimensions
+- Unexpected-length and invalid-value flags
+- Object location, rotation and scale
+- World-space bounding boxes
+- Parenting information
+- Calculated arm length and expected assembly radius
 
-## Install
-
-Install the release ZIP through Blender:
-
-`Edit > Preferences > Add-ons > Install from Disk`
-
-Open the `Quantum Relay` tab in the 3D Viewport sidebar.
+The JSON report is saved beside the current `.blend` file. For an unsaved file,
+it is written to the operating system's temporary directory.

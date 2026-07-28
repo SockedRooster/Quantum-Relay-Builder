@@ -18,6 +18,7 @@ from .gussets import create_gusset_array
 from .braces import create_cross_brace_array
 from .validation import validate_generated_assembly
 from .naming import ROOT
+from ..diagnostics import log_object, write_report
 
 
 def create_root(collection, location, display_size):
@@ -141,6 +142,22 @@ def build_sprint5_assembly(context, props):
     warnings = validate_generated_assembly(registry, root, expected_radius)
     registry.build_warnings = warnings
     registry.effective_arm_length = locals().get("effective_arm_length", 0.0)
+
+    for generated_object in registry.all_objects():
+        log_object(generated_object, root)
+
+    registry.diagnostic_log_path = write_report({
+        "version": "2.0.2",
+        "sprint": "6.1.1",
+        "expected_radius": float(expected_radius),
+        "effective_arm_length": float(registry.effective_arm_length),
+        "object_count": len(registry.all_objects()),
+        "warnings": list(warnings),
+        "cursor": [float(value) for value in cursor],
+        "preset": props.preset,
+        "arm_count": int(props.arm_count),
+        "reflector_rings": int(props.reflector_rings),
+    })
 
     bpy.ops.object.select_all(action='DESELECT')
     root.select_set(True)

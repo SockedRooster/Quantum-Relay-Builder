@@ -1,3 +1,13 @@
+# Changelog
+
+## 2.0.2 — Sprint 6.1.1
+
+- Built directly from the stable Sprint 6.1 source.
+- Added optional JSON diagnostic logging.
+- Added beam coordinate and length instrumentation.
+- Added object transform, parenting and world-bounds reporting.
+- Added configurable unexpected-beam-length warnings.
+- Left the Sprint 6.1 geometry-generation math unchanged.
 
 ## 2.0.1 — Sprint 6.1
 

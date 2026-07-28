@@ -160,6 +160,19 @@ class QRBuilderProperties(PropertyGroup):
         name="Brace Height", default=0.10, min=0.01, soft_max=1.0, unit='LENGTH'
     )
 
+    diagnostic_logging: BoolProperty(
+        name="Diagnostic Logging",
+        description="Write beam coordinates, transforms and bounds to a JSON log",
+        default=False,
+    )
+    diagnostic_length_multiplier: FloatProperty(
+        name="Beam Length Warning",
+        description="Flag beams longer than this multiple of the calculated arm length",
+        default=2.0,
+        min=1.0,
+        max=20.0,
+    )
+
     bevel_width: FloatProperty(
         name="Bevel Width", default=0.035, min=0.0, soft_max=0.25, unit='LENGTH'
     )

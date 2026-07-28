@@ -4,6 +4,7 @@ from .geometry.assembly import build_sprint5_assembly
 from .geometry.collections import clear_generated_collection
 from .geometry.stats import collect_mesh_statistics
 from .presets import apply_preset
+from .diagnostics import configure
 
 
 class QR_OT_apply_preset(Operator):
@@ -39,6 +40,11 @@ class QR_OT_build_sprint6(Operator):
         props = context.scene.qr_builder
 
         try:
+            expected_beam_length = max(
+                props.arm_length,
+                props.panel_radius * (props.reflector_rings * 2 + 3),
+            ) * props.diagnostic_length_multiplier
+            configure(props.diagnostic_logging, expected_beam_length)
             registry = build_sprint5_assembly(context, props)
             stats = collect_mesh_statistics(registry)
             warnings = getattr(registry, 'build_warnings', [])
@@ -46,16 +52,17 @@ class QR_OT_build_sprint6(Operator):
             self.report({'ERROR'}, f"Quantum Relay build failed: {exc}")
             return {'CANCELLED'}
 
-        self.report(
-            {'INFO'},
-            (
+        log_path = getattr(registry, "diagnostic_log_path", "")
+        message = (
                 f"Generated {stats['objects']} mesh objects, "
                 f"{stats['vertices']} vertices and "
                 f"{stats['polygons']} polygons; "
                 f"arm length {getattr(registry, 'effective_arm_length', 0.0):.2f}; "
                 f"{len(warnings)} warning(s)"
-            ),
         )
+        if log_path:
+            message += f"; diagnostic log: {log_path}"
+        self.report({'INFO'}, message)
         return {'FINISHED'}
 
 
