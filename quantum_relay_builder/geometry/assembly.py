@@ -19,6 +19,7 @@ from .braces import create_cross_brace_array
 from .validation import validate_generated_assembly
 from .support_geometry import calculate_support_attachment
 from .support_nodes import build_support_nodes
+from .attachment_brackets import create_attachment_brackets
 from .naming import ROOT
 from ..diagnostics import log_object, write_report
 
@@ -82,7 +83,7 @@ def build_sprint5_assembly(context, props):
         support_origin = cursor + Vector((
             0.0,
             0.0,
-            (props.panel_thickness / 2.0) + 0.10 + (props.hub_height / 2.0),
+            (props.panel_thickness / 2.0) + 0.32 + (props.hub_height / 2.0),
         ))
 
         support_metrics = calculate_support_attachment(
@@ -108,10 +109,10 @@ def build_sprint5_assembly(context, props):
                 f"Support attachment radius {mount_radius:.3f} exceeds "
                 f"expected assembly radius {expected_radius:.3f}"
             )
-        arm_near_centre_z = support_origin.z + (props.hub_height * 0.12)
+        arm_near_centre_z = support_origin.z + (props.hub_height * 0.08)
         arm_far_centre_z = max(
             ring_top_z + props.arm_ring_clearance + (props.arm_thickness / 2.0),
-            panel_top_z + 0.05 + (props.arm_thickness / 2.0),
+            panel_top_z + 0.20 + (props.arm_thickness / 2.0),
         )
 
         support_nodes = build_support_nodes(
@@ -141,6 +142,18 @@ def build_sprint5_assembly(context, props):
             dark_material=dark,
             energy_material=energy,
         ))
+
+        create_attachment_brackets(
+            collection=collection,
+            nodes=support_nodes,
+            arm_width_hub=props.arm_width_hub,
+            arm_width_outer=props.arm_width_outer,
+            arm_thickness=props.arm_thickness,
+            bevel_width=props.bevel_width,
+            hub_material=titanium,
+            ring_material=dark,
+            registry=registry,
+        )
 
         arm_top_z = arm_far_centre_z + (props.arm_thickness / 2.0)
         mount_width = props.arm_width_outer * props.mount_width_scale
@@ -188,8 +201,8 @@ def build_sprint5_assembly(context, props):
         log_object(generated_object, root)
 
     registry.diagnostic_log_path = write_report({
-        "version": "2.1.1",
-        "sprint": "6.2.1",
+        "version": "2.1.2",
+        "sprint": "6.2.2",
         "expected_radius": float(expected_radius),
         "effective_arm_length": float(registry.effective_arm_length),
         "arm_start_radius": float(locals().get("arm_start_radius", 0.0)),

@@ -46,3 +46,12 @@ heights.
 - Uses the same ring node for the arm endpoint and mount centre.
 - Records all attachment-node coordinates in diagnostic reports.
 - Retains the earlier arm-array API as a compatibility wrapper.
+
+
+## v2.1.2 — Sprint 6.2.2
+
+- Raises the complete support framework farther above the reflector.
+- Replaces each solid arm with two separated structural rails.
+- Adds a raised energy conduit along each arm centreline.
+- Adds visible hub and ring attachment saddles at every explicit node.
+- Uses the same node coordinates for rails, brackets and mount blocks.

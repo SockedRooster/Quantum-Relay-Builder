@@ -14,7 +14,7 @@ class QR_PT_builder(Panel):
         props = context.scene.qr_builder
 
         layout.label(text=BUILD_LABEL)
-        layout.label(text="Explicit hub-to-ring attachment nodes", icon='MESH_DATA')
+        layout.label(text="Raised twin-rail support framework", icon='MESH_DATA')
 
         family = layout.box()
         family.label(text="Relay Family")

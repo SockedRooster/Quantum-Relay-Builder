@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.2 — Sprint 6.2.2
+
+- Added visible twin-rail support arms.
+- Added raised centreline energy conduits.
+- Added explicit hub and ring attachment brackets.
+- Increased support-framework clearance above the reflector.
+- Kept all support hardware locked to the explicit attachment nodes.
+
 ## 2.1.1 — Sprint 6.2.1
 
 - Added explicit hub/ring attachment-node generation.
