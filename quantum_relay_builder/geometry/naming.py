@@ -24,3 +24,15 @@ def edge_ring_segment(index):
 
 def edge_ring_rib(index):
     return f"QR_EdgeRing_Rib_{index:02d}"
+
+
+def mount(index, component):
+    return f"QR_Mount_{index:02d}_{component}"
+
+
+def gusset(index, side):
+    return f"QR_Gusset_{index:02d}_{side}"
+
+
+def brace(index):
+    return f"QR_CrossBrace_{index:02d}"

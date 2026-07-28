@@ -273,6 +273,112 @@ class QRBuilderProperties(PropertyGroup):
         unit='LENGTH',
     )
 
+    generate_mounts: BoolProperty(
+        name="Mount Blocks",
+        description="Create arm-to-ring mounting blocks and upper clamps",
+        default=True,
+    )
+
+    mount_length: FloatProperty(
+        name="Mount Length",
+        description="Radial length of each arm-end mounting block",
+        default=0.42,
+        min=0.05,
+        soft_max=2.0,
+        unit='LENGTH',
+    )
+
+    mount_width_scale: FloatProperty(
+        name="Mount Width Scale",
+        description="Mount width relative to the arm's outer width",
+        default=1.28,
+        min=0.5,
+        max=3.0,
+    )
+
+    mount_height: FloatProperty(
+        name="Mount Height",
+        description="Height of the lower mounting block",
+        default=0.24,
+        min=0.03,
+        soft_max=1.0,
+        unit='LENGTH',
+    )
+
+    clamp_height: FloatProperty(
+        name="Clamp Height",
+        description="Height of the upper ring clamp",
+        default=0.10,
+        min=0.01,
+        soft_max=0.5,
+        unit='LENGTH',
+    )
+
+    generate_gussets: BoolProperty(
+        name="Gussets",
+        description="Create paired triangular reinforcement gussets",
+        default=True,
+    )
+
+    gusset_length: FloatProperty(
+        name="Gusset Length",
+        description="Distance the gussets extend inward along the support arm",
+        default=0.62,
+        min=0.05,
+        soft_max=3.0,
+        unit='LENGTH',
+    )
+
+    gusset_height: FloatProperty(
+        name="Gusset Height",
+        description="Vertical rise of each triangular gusset",
+        default=0.25,
+        min=0.02,
+        soft_max=2.0,
+        unit='LENGTH',
+    )
+
+    gusset_thickness: FloatProperty(
+        name="Gusset Thickness",
+        description="Tangential thickness of each gusset plate",
+        default=0.07,
+        min=0.01,
+        soft_max=0.5,
+        unit='LENGTH',
+    )
+
+    generate_braces: BoolProperty(
+        name="Cross Braces",
+        description="Create a polygon of braces between neighbouring support arms",
+        default=True,
+    )
+
+    brace_radius_scale: FloatProperty(
+        name="Brace Radius",
+        description="Brace ring radius as a fraction of support-arm length",
+        default=0.58,
+        min=0.15,
+        max=0.95,
+    )
+
+    brace_width: FloatProperty(
+        name="Brace Width",
+        description="Horizontal width of each cross brace",
+        default=0.10,
+        min=0.01,
+        soft_max=1.0,
+        unit='LENGTH',
+    )
+
+    brace_height: FloatProperty(
+        name="Brace Height",
+        description="Vertical thickness of each cross brace",
+        default=0.10,
+        min=0.01,
+        soft_max=1.0,
+        unit='LENGTH',
+    )
+
     bevel_width: FloatProperty(
         name="Bevel Width",
         default=0.035,

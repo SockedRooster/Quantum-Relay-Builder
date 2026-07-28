@@ -13,6 +13,9 @@ from .reflector import create_reflector_array
 from .edge_ring import create_structural_edge_ring
 from .hub import create_layered_hub
 from .arms import create_detailed_arm_array
+from .mounts import create_mount_array
+from .gussets import create_gusset_array
+from .braces import create_cross_brace_array
 from .naming import ROOT
 
 
@@ -63,8 +66,10 @@ def build_sprint5_assembly(context, props):
         registry=registry,
     )
 
+    ring_metrics = None
+
     if props.generate_edge_ring:
-        create_structural_edge_ring(
+        ring_metrics = create_structural_edge_ring(
             collection=collection,
             origin=cursor,
             reflector_outer_radius=reflector_metrics["outer_radius"],
@@ -129,6 +134,76 @@ def build_sprint5_assembly(context, props):
                 energy,
             ),
         )
+
+        arm_start_radius = props.hub_radius + props.arm_gap
+        arm_end_radius = arm_start_radius + props.arm_length
+
+        if ring_metrics is not None:
+            mount_radius = (
+                ring_metrics["inner_radius"]
+                + ring_metrics["outer_radius"]
+            ) / 2.0
+            ring_top_z = cursor.z + (props.edge_ring_height / 2.0)
+        else:
+            mount_radius = arm_end_radius
+            ring_top_z = cursor.z
+
+        arm_top_z = support_origin.z + (props.arm_thickness / 2.0)
+        mount_width = props.arm_width_outer * props.mount_width_scale
+
+        if props.generate_mounts:
+            create_mount_array(
+                collection=collection,
+                origin=support_origin,
+                arm_count=props.arm_count,
+                mount_radius=mount_radius,
+                arm_outer_width=props.arm_width_outer,
+                mount_length=props.mount_length,
+                mount_width_scale=props.mount_width_scale,
+                mount_height=props.mount_height,
+                clamp_height=props.clamp_height,
+                arm_top_z=arm_top_z,
+                ring_top_z=ring_top_z,
+                bevel_width=props.bevel_width,
+                base_material=dark,
+                clamp_material=titanium,
+                registry=registry,
+            )
+
+        if props.generate_gussets:
+            create_gusset_array(
+                collection=collection,
+                origin=support_origin,
+                arm_count=props.arm_count,
+                mount_radius=mount_radius,
+                arm_outer_width=props.arm_width_outer,
+                mount_width=mount_width,
+                gusset_length=props.gusset_length,
+                gusset_height=props.gusset_height,
+                gusset_thickness=props.gusset_thickness,
+                arm_top_z=arm_top_z,
+                bevel_width=props.bevel_width,
+                material=titanium,
+                registry=registry,
+            )
+
+        if props.generate_braces:
+            brace_radius = (
+                arm_start_radius
+                + props.arm_length * props.brace_radius_scale
+            )
+            create_cross_brace_array(
+                collection=collection,
+                origin=support_origin,
+                arm_count=props.arm_count,
+                brace_radius=brace_radius,
+                brace_width=props.brace_width,
+                brace_height=props.brace_height,
+                centre_z=support_origin.z,
+                bevel_width=props.bevel_width,
+                material=dark,
+                registry=registry,
+            )
 
     for obj in registry.all_objects():
         if obj is not root:

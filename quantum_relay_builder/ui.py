@@ -14,7 +14,7 @@ class QR_PT_builder(Panel):
         props = context.scene.qr_builder
 
         layout.label(text=BUILD_LABEL)
-        layout.label(text="Structural edge-ring milestone", icon='MESH_TORUS')
+        layout.label(text="Structural integration milestone", icon='MOD_ARRAY')
 
         reflector = layout.box()
         reflector.label(text="Reflector")
@@ -31,7 +31,6 @@ class QR_PT_builder(Panel):
         edge_ring = layout.box()
         edge_ring.label(text="Structural Edge Ring")
         edge_ring.prop(props, "generate_edge_ring")
-
         ring_column = edge_ring.column()
         ring_column.enabled = props.generate_edge_ring
         ring_column.prop(props, "edge_ring_clearance")
@@ -43,9 +42,8 @@ class QR_PT_builder(Panel):
         ring_column.prop(props, "edge_ring_rib_height")
 
         structure = layout.box()
-        structure.label(text="Support Structure")
+        structure.label(text="Hub and Support Arms")
         structure.prop(props, "generate_structure")
-
         column = structure.column()
         column.enabled = props.generate_structure
         column.prop(props, "arm_count")
@@ -63,6 +61,33 @@ class QR_PT_builder(Panel):
         column.prop(props, "rail_height")
         column.prop(props, "channel_width")
         column.prop(props, "channel_height")
+
+        integration = layout.box()
+        integration.label(text="Structure Detail")
+
+        integration.prop(props, "generate_mounts")
+        mount_column = integration.column()
+        mount_column.enabled = props.generate_structure and props.generate_mounts
+        mount_column.prop(props, "mount_length")
+        mount_column.prop(props, "mount_width_scale")
+        mount_column.prop(props, "mount_height")
+        mount_column.prop(props, "clamp_height")
+
+        integration.separator()
+        integration.prop(props, "generate_gussets")
+        gusset_column = integration.column()
+        gusset_column.enabled = props.generate_structure and props.generate_gussets
+        gusset_column.prop(props, "gusset_length")
+        gusset_column.prop(props, "gusset_height")
+        gusset_column.prop(props, "gusset_thickness")
+
+        integration.separator()
+        integration.prop(props, "generate_braces")
+        brace_column = integration.column()
+        brace_column.enabled = props.generate_structure and props.generate_braces
+        brace_column.prop(props, "brace_radius_scale")
+        brace_column.prop(props, "brace_width")
+        brace_column.prop(props, "brace_height")
 
         detail = layout.box()
         detail.label(text="Global Detail")
