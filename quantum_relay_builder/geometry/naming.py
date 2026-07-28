@@ -16,3 +16,11 @@ def arm(index, component):
 
 def hub(component):
     return f"QR_Hub_{component}"
+
+
+def edge_ring_segment(index):
+    return f"QR_EdgeRing_Segment_{index:02d}"
+
+
+def edge_ring_rib(index):
+    return f"QR_EdgeRing_Rib_{index:02d}"

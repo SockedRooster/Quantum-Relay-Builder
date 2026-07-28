@@ -4,7 +4,7 @@ Procedural Blender tooling for the Quantum Relay KSP asset family.
 
 ## Current release
 
-v1.3.0 — Sprint 5.1 Foundation Refactor
+v1.3.1 — Sprint 5.2 Structural Edge Ring
 
 ## Features
 
@@ -13,8 +13,10 @@ v1.3.0 — Sprint 5.1 Foundation Refactor
 - Curvature and automatic panel aiming
 - Layered support hub
 - Radial support arms
-- Centralised versioning
-- Centralised object naming
+- Segmented procedural structural edge ring
+- Configurable expansion-joint gaps
+- Raised reinforcement ribs
+- Centralised versioning and object naming
 - Semantic part registry with duplicate-name protection
 
 ## Install

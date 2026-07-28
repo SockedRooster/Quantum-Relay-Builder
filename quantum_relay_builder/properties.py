@@ -79,6 +79,74 @@ class QRBuilderProperties(PropertyGroup):
         default=True,
     )
 
+    generate_edge_ring: BoolProperty(
+        name="Generate Edge Ring",
+        description="Create the segmented structural ring around the reflector",
+        default=True,
+    )
+
+    edge_ring_clearance: FloatProperty(
+        name="Ring Clearance",
+        description="Radial clearance between the reflector panels and structural ring",
+        default=0.18,
+        min=0.0,
+        soft_max=2.0,
+        unit='LENGTH',
+    )
+
+    edge_ring_width: FloatProperty(
+        name="Ring Width",
+        description="Radial width of the structural edge ring",
+        default=0.26,
+        min=0.02,
+        soft_max=2.0,
+        unit='LENGTH',
+    )
+
+    edge_ring_height: FloatProperty(
+        name="Ring Height",
+        description="Vertical thickness of each structural ring segment",
+        default=0.18,
+        min=0.02,
+        soft_max=2.0,
+        unit='LENGTH',
+    )
+
+    edge_ring_segments: IntProperty(
+        name="Ring Segments",
+        description="Number of structural segments around the edge ring",
+        default=12,
+        min=6,
+        max=96,
+    )
+
+    edge_ring_gap_angle: FloatProperty(
+        name="Joint Gap",
+        description="Angular gap between neighbouring edge-ring segments",
+        default=0.018,
+        min=0.0,
+        max=0.20,
+        subtype='ANGLE',
+    )
+
+    edge_ring_rib_width: FloatProperty(
+        name="Rib Width",
+        description="Tangential width of reinforcement ribs",
+        default=0.10,
+        min=0.01,
+        soft_max=1.0,
+        unit='LENGTH',
+    )
+
+    edge_ring_rib_height: FloatProperty(
+        name="Rib Height",
+        description="Height added by the outer reinforcement ribs",
+        default=0.08,
+        min=0.0,
+        soft_max=1.0,
+        unit='LENGTH',
+    )
+
     generate_structure: BoolProperty(
         name="Generate Hub and Arms",
         description="Include the support assembly",
@@ -110,7 +178,7 @@ class QRBuilderProperties(PropertyGroup):
     )
 
     hub_ring_height: FloatProperty(
-        name="Ring Height",
+        name="Hub Ring Height",
         default=0.15,
         min=0.01,
         soft_max=1.0,

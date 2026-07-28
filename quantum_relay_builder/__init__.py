@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Quantum Relay Builder",
     "author": "SockedRooster / OpenAI",
-    "version": (1, 3, 0),
+    "version": (1, 3, 1),
     "blender": (5, 2, 0),
     "location": "3D Viewport > Sidebar > Quantum Relay",
     "description": "Procedural modelling tools for Quantum Relay parts",

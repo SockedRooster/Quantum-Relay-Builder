@@ -14,7 +14,7 @@ class QR_PT_builder(Panel):
         props = context.scene.qr_builder
 
         layout.label(text=BUILD_LABEL)
-        layout.label(text="Large-scale QR-100 baseline", icon='OUTLINER_OB_SURFACE')
+        layout.label(text="Structural edge-ring milestone", icon='MESH_TORUS')
 
         reflector = layout.box()
         reflector.label(text="Reflector")
@@ -27,6 +27,20 @@ class QR_PT_builder(Panel):
         reflector.prop(props, "reflector_thickness")
         reflector.prop(props, "reflector_curvature")
         reflector.prop(props, "tilt_panels")
+
+        edge_ring = layout.box()
+        edge_ring.label(text="Structural Edge Ring")
+        edge_ring.prop(props, "generate_edge_ring")
+
+        ring_column = edge_ring.column()
+        ring_column.enabled = props.generate_edge_ring
+        ring_column.prop(props, "edge_ring_clearance")
+        ring_column.prop(props, "edge_ring_width")
+        ring_column.prop(props, "edge_ring_height")
+        ring_column.prop(props, "edge_ring_segments")
+        ring_column.prop(props, "edge_ring_gap_angle")
+        ring_column.prop(props, "edge_ring_rib_width")
+        ring_column.prop(props, "edge_ring_rib_height")
 
         structure = layout.box()
         structure.label(text="Support Structure")

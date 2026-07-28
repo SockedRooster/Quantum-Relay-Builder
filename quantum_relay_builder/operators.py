@@ -7,7 +7,7 @@ from .geometry.collections import clear_generated_collection
 class QR_OT_build_sprint5(Operator):
     bl_idname = "qr.build_sprint5"
     bl_label = "Build Sprint 5 Relay"
-    bl_description = "Generate the large-scale Quantum Relay assembly"
+    bl_description = "Generate the large-scale relay with structural edge ring"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -24,8 +24,8 @@ class QR_OT_build_sprint5(Operator):
             {'INFO'},
             (
                 f"Generated {counts.get('panel_frame', 0)} panels, "
-                f"{counts.get('reflector', 0)} reflectors and "
-                f"{counts.get('arm', 0)} arm components"
+                f"{counts.get('edge_ring', 0)} ring segments and "
+                f"{counts.get('edge_ring_rib', 0)} reinforcement ribs"
             ),
         )
         return {'FINISHED'}
