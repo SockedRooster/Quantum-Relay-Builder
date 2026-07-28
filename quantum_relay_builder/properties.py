@@ -31,7 +31,7 @@ class QRBuilderProperties(PropertyGroup):
         max=5,
     )
     panel_radius: FloatProperty(
-        name="Panel Radius", default=1.24, min=0.05, soft_max=10.0, unit='LENGTH'
+        name="Panel Radius", default=1.488, min=0.05, soft_max=10.0, unit='LENGTH'
     )
     panel_gap: FloatProperty(
         name="Panel Gap", default=0.10, min=0.0, soft_max=1.0, unit='LENGTH'
