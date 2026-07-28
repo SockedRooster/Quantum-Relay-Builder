@@ -21,6 +21,7 @@ from .support_geometry import calculate_support_attachment
 from .support_nodes import build_support_nodes
 from .attachment_brackets import create_attachment_brackets
 from .flight_hardware import create_mounting_interface, create_feed_assembly, create_cable_harness
+from .deploy_mount import create_deployable_mount
 from .naming import ROOT
 from ..diagnostics import log_object, write_report
 
@@ -226,8 +227,38 @@ def build_sprint5_assembly(context, props):
                 material=dark, registry=registry,
             )
 
+    if props.generate_structure and props.generate_deployable_mount:
+        pre_mount_objects = [obj for obj in registry.all_objects() if obj is not root]
+        create_deployable_mount(
+            collection=collection,
+            registry=registry,
+            relay_objects=pre_mount_objects,
+            support_origin=support_origin,
+            arm_length=props.deploy_arm_length,
+            arm_width=props.deploy_arm_width,
+            arm_height=props.deploy_arm_height,
+            hinge_radius=props.deploy_hinge_radius,
+            base_radius=props.deploy_base_radius,
+            base_height=props.deploy_base_height,
+            deploy_angle=props.deploy_angle,
+            generate_braces=props.generate_deploy_braces,
+            brace_width=props.deploy_brace_width,
+            brace_spread=props.deploy_brace_spread,
+            generate_actuator=props.generate_deploy_actuator,
+            actuator_radius=props.deploy_actuator_radius,
+            deploy_start_frame=props.deploy_start_frame,
+            deploy_end_frame=props.deploy_end_frame,
+            power_on_frame=props.power_on_frame,
+            bevel_width=props.bevel_width,
+            dark_material=dark,
+            titanium_material=titanium,
+        )
+        context.scene.frame_start = min(context.scene.frame_start, props.deploy_start_frame)
+        context.scene.frame_end = max(context.scene.frame_end, props.power_on_frame + 15)
+        context.scene.frame_set(props.deploy_end_frame)
+
     for obj in registry.all_objects():
-        if obj is not root:
+        if obj is not root and obj.parent is None:
             _parent_keep_world(obj, root)
 
     warnings = validate_generated_assembly(registry, root, expected_radius)
@@ -238,8 +269,8 @@ def build_sprint5_assembly(context, props):
         log_object(generated_object, root)
 
     registry.diagnostic_log_path = write_report({
-        "version": "2.4.0",
-        "sprint": "6.4 Flight Hardware Integration",
+        "version": "3.1.0",
+        "sprint": "7.1 Deploy Mechanism",
         "expected_radius": float(expected_radius),
         "effective_arm_length": float(registry.effective_arm_length),
         "arm_start_radius": float(locals().get("arm_start_radius", 0.0)),

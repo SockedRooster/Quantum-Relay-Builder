@@ -1,3 +1,5 @@
+import math
+
 from bpy.props import BoolProperty, EnumProperty, FloatProperty, IntProperty
 from bpy.types import PropertyGroup
 
@@ -204,6 +206,28 @@ class QRBuilderProperties(PropertyGroup):
     generate_cable_harness: BoolProperty(name="Cable Harness", default=True)
     cable_radius: FloatProperty(name="Cable Radius", default=0.022, min=0.004, soft_max=0.10, unit='LENGTH')
     cable_clamp_count: IntProperty(name="Cable Clamps", default=5, min=2, max=16)
+
+
+    generate_deployable_mount: BoolProperty(
+        name="Deployable Mount",
+        description="Generate a player-triggered fold-out arm and animated status indicator",
+        default=True,
+    )
+    deploy_arm_length: FloatProperty(name="Deploy Arm Length", default=1.90, min=0.50, soft_max=8.0, unit='LENGTH')
+    deploy_arm_width: FloatProperty(name="Deploy Arm Width", default=0.18, min=0.04, soft_max=0.8, unit='LENGTH')
+    deploy_arm_height: FloatProperty(name="Deploy Arm Height", default=0.42, min=0.10, soft_max=1.5, unit='LENGTH')
+    deploy_hinge_radius: FloatProperty(name="Hinge Radius", default=0.34, min=0.08, soft_max=1.5, unit='LENGTH')
+    deploy_base_radius: FloatProperty(name="Base Radius", default=0.62, min=0.15, soft_max=2.5, unit='LENGTH')
+    deploy_base_height: FloatProperty(name="Base Height", default=0.24, min=0.05, soft_max=1.0, unit='LENGTH')
+    generate_deploy_braces: BoolProperty(name="Locking Support Legs", default=True)
+    deploy_brace_width: FloatProperty(name="Leg Width", default=0.11, min=0.025, soft_max=0.5, unit='LENGTH')
+    deploy_brace_spread: FloatProperty(name="Leg Spread", default=0.38, min=0.08, soft_max=1.5, unit='LENGTH')
+    generate_deploy_actuator: BoolProperty(name="Linear Actuator", default=True)
+    deploy_actuator_radius: FloatProperty(name="Actuator Radius", default=0.075, min=0.015, soft_max=0.3, unit='LENGTH')
+    deploy_angle: FloatProperty(name="Stowed Angle", default=math.radians(90.0), min=math.radians(15.0), max=math.radians(170.0), subtype='ANGLE')
+    deploy_start_frame: IntProperty(name="Deploy Start", default=1, min=1, max=1000)
+    deploy_end_frame: IntProperty(name="Deploy End", default=45, min=2, max=1000)
+    power_on_frame: IntProperty(name="Power On", default=55, min=3, max=1000)
 
     diagnostic_logging: BoolProperty(
         name="Diagnostic Logging",

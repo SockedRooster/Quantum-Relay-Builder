@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.0 - Sprint 7.1 Deploy Mechanism
+- Added dual folding support legs and clevis joints.
+- Added cross-brace and deploy-arm locking structure.
+- Added linear actuator, rod and pivot hardware.
+- Added deploy mechanism controls to the Blender sidebar.
+- Reduced the default deploy-arm length for a more compact mounting system.
+
+
 ## 2.1.2 — Sprint 6.2.2
 
 - Added visible twin-rail support arms.

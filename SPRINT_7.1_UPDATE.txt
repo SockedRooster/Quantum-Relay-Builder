@@ -1,0 +1,14 @@
+Quantum Relay Builder v3.1.0 - Sprint 7.1 Deploy Mechanism
+
+Added:
+- Dual folding locking support legs beneath the deploy arm
+- Separate left/right brace objects with clevis joints
+- Cross-tie between the brace legs
+- Screw-jack style linear actuator with separate housing and rod
+- Actuator pivot pins
+- Sidebar controls for support legs, spread, width, actuator and actuator radius
+- Shortened default deploy-arm length from 2.20 m to 1.90 m
+- Animation/export metadata for braces and actuator components
+
+The generated scene remains positioned at the deployed frame after building.
+Restart Blender completely before installing a replacement add-on version.

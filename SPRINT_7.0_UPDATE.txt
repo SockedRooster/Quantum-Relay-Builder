@@ -1,0 +1,15 @@
+Quantum Relay Builder v3.0.0 - Sprint 7.0 Deployable Mount System
+
+Added:
+- Player-triggered fold-out relay mounting arm
+- Dedicated animation hierarchy: Relay_Base, Deploy_Hinge, Deploy_Arm, Relay_Payload
+- Warren-truss deploy arm with hinge bearing, gearbox, hard lock and electronics box
+- Stage 1 deploy animation from stowed angle to flight position
+- Stage 2 status indicator animation: off, amber, green
+- Timeline and frame controls in the Blender sidebar
+- KSP export metadata custom properties on the base, hinge and payload
+
+Default animation:
+- Frame 1: stowed
+- Frame 45: fully deployed; amber indicator
+- Frame 55: relay powered; green indicator
