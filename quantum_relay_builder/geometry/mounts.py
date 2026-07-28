@@ -40,14 +40,21 @@ def create_mount_array(
     base_material,
     clamp_material,
     registry,
+    attachment_nodes=None,
 ):
     mount_width = arm_outer_width * mount_width_scale
 
     for index in range(arm_count):
-        angle = (2.0 * math.pi * index) / arm_count
-        radial = Vector((math.cos(angle), math.sin(angle), 0.0))
-        tangent = Vector((-math.sin(angle), math.cos(angle), 0.0))
-        centre = Vector(origin) + radial * mount_radius
+        if attachment_nodes is not None:
+            node = attachment_nodes[index]
+            radial = Vector(node["radial"])
+            tangent = Vector(node["tangent"])
+            centre = Vector(node["ring"])
+        else:
+            angle = (2.0 * math.pi * index) / arm_count
+            radial = Vector((math.cos(angle), math.sin(angle), 0.0))
+            tangent = Vector((-math.sin(angle), math.cos(angle), 0.0))
+            centre = Vector(origin) + radial * mount_radius
 
         base_bottom = arm_top_z
         base_top = max(base_bottom + mount_height, ring_top_z)

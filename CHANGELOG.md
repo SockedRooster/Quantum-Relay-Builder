@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.1 — Sprint 6.2.1
+
+- Added explicit hub/ring attachment-node generation.
+- Rebuilt support arms directly between node pairs.
+- Raised the support hub above the dish.
+- Bound mount centres to the same ring nodes used by the arms.
+- Added support-node coordinates to diagnostic output.
+- Preserved compatibility with the previous public arm function.
+
 ## 2.0.4 — Sprint 6.1.3
 
 - Added global stale generated-object cleanup.

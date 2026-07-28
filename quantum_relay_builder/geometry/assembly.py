@@ -12,12 +12,13 @@ from .materials import (
 from .reflector import create_reflector_array
 from .edge_ring import create_structural_edge_ring
 from .hub import create_layered_hub
-from .arms import create_detailed_arm_array
+from .arms import create_arm_array_from_nodes
 from .mounts import create_mount_array
 from .gussets import create_gusset_array
 from .braces import create_cross_brace_array
 from .validation import validate_generated_assembly
 from .support_geometry import calculate_support_attachment
+from .support_nodes import build_support_nodes
 from .naming import ROOT
 from ..diagnostics import log_object, write_report
 
@@ -75,7 +76,14 @@ def build_sprint5_assembly(context, props):
     expected_radius = reflector_metrics["outer_radius"]
 
     if props.generate_structure:
-        support_origin = cursor + Vector((0.0, 0.0, -(props.panel_thickness / 2.0) - (props.hub_height / 2.0) - 0.10))
+        # The support hub is intentionally above the reflector. Its lower face
+        # clears the panel surface so the hub and arm roots remain visible.
+        panel_top_z = cursor.z + (props.panel_thickness / 2.0)
+        support_origin = cursor + Vector((
+            0.0,
+            0.0,
+            (props.panel_thickness / 2.0) + 0.10 + (props.hub_height / 2.0),
+        ))
 
         support_metrics = calculate_support_attachment(
             reflector_outer_radius=reflector_metrics["outer_radius"],
@@ -100,8 +108,20 @@ def build_sprint5_assembly(context, props):
                 f"Support attachment radius {mount_radius:.3f} exceeds "
                 f"expected assembly radius {expected_radius:.3f}"
             )
-        arm_near_centre_z = support_origin.z + (props.hub_height / 2.0)
-        arm_far_centre_z = ring_top_z + props.arm_ring_clearance + (props.arm_thickness / 2.0)
+        arm_near_centre_z = support_origin.z + (props.hub_height * 0.12)
+        arm_far_centre_z = max(
+            ring_top_z + props.arm_ring_clearance + (props.arm_thickness / 2.0),
+            panel_top_z + 0.05 + (props.arm_thickness / 2.0),
+        )
+
+        support_nodes = build_support_nodes(
+            origin=support_origin,
+            arm_count=props.arm_count,
+            hub_attachment_radius=arm_start_radius,
+            ring_attachment_radius=mount_radius,
+            hub_attachment_z=arm_near_centre_z,
+            ring_attachment_z=arm_far_centre_z,
+        )
 
         registry.extend("hub", create_layered_hub(
             collection, support_origin, props.hub_radius, props.hub_height,
@@ -109,13 +129,17 @@ def build_sprint5_assembly(context, props):
             props.bevel_width, titanium, dark, energy,
         ))
 
-        registry.extend("arm", create_detailed_arm_array(
-            collection, support_origin, props.arm_count, props.hub_radius,
-            props.arm_gap, mount_radius, props.arm_width_hub,
-            props.arm_width_outer, props.arm_thickness, props.rail_width,
-            props.rail_height, props.channel_width, props.channel_height,
-            props.bevel_width, titanium, dark, energy,
-            arm_near_centre_z, arm_far_centre_z,
+        registry.extend("arm", create_arm_array_from_nodes(
+            collection=collection,
+            nodes=support_nodes,
+            width_hub=props.arm_width_hub,
+            width_outer=props.arm_width_outer,
+            thickness=props.arm_thickness,
+            channel_width=props.channel_width,
+            channel_height=props.channel_height,
+            bevel_width=props.bevel_width,
+            dark_material=dark,
+            energy_material=energy,
         ))
 
         arm_top_z = arm_far_centre_z + (props.arm_thickness / 2.0)
@@ -129,6 +153,7 @@ def build_sprint5_assembly(context, props):
                 mount_height=props.mount_height, clamp_height=props.clamp_height,
                 arm_top_z=arm_top_z, ring_top_z=ring_top_z, bevel_width=props.bevel_width,
                 base_material=dark, clamp_material=titanium, registry=registry,
+                attachment_nodes=support_nodes,
             )
 
         if props.generate_gussets:
@@ -163,8 +188,8 @@ def build_sprint5_assembly(context, props):
         log_object(generated_object, root)
 
     registry.diagnostic_log_path = write_report({
-        "version": "2.0.4",
-        "sprint": "6.1.3",
+        "version": "2.1.1",
+        "sprint": "6.2.1",
         "expected_radius": float(expected_radius),
         "effective_arm_length": float(registry.effective_arm_length),
         "arm_start_radius": float(locals().get("arm_start_radius", 0.0)),
@@ -175,6 +200,15 @@ def build_sprint5_assembly(context, props):
         "ring_outer_radius": float(ring_metrics["outer_radius"]) if ring_metrics else None,
         "arm_near_centre_z": float(locals().get("arm_near_centre_z", 0.0)),
         "arm_far_centre_z": float(locals().get("arm_far_centre_z", 0.0)),
+        "support_node_count": len(locals().get("support_nodes", [])),
+        "support_hub_points": [
+            [float(value) for value in node["hub"]]
+            for node in locals().get("support_nodes", [])
+        ],
+        "support_ring_points": [
+            [float(value) for value in node["ring"]]
+            for node in locals().get("support_nodes", [])
+        ],
         "object_count": len(registry.all_objects()),
         "warnings": list(warnings),
         "cursor": [float(value) for value in cursor],

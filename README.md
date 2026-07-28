@@ -36,3 +36,13 @@ heights.
 - Uses the same authoritative attachment radius for arms, mounts and gussets.
 - Hides the obsolete free-form arm-length control while retaining preset compatibility.
 - Records reflector, ring, arm-start and attachment radii in diagnostic reports.
+
+
+## v2.1.1 — Sprint 6.2.1
+
+- Added explicit matching hub and ring attachment nodes.
+- Generates each support arm directly between its node pair.
+- Places the central hub above the reflector instead of beneath the panels.
+- Uses the same ring node for the arm endpoint and mount centre.
+- Records all attachment-node coordinates in diagnostic reports.
+- Retains the earlier arm-array API as a compatibility wrapper.
