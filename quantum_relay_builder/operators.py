@@ -41,6 +41,7 @@ class QR_OT_build_sprint6(Operator):
         try:
             registry = build_sprint5_assembly(context, props)
             stats = collect_mesh_statistics(registry)
+            warnings = getattr(registry, 'build_warnings', [])
         except Exception as exc:
             self.report({'ERROR'}, f"Quantum Relay build failed: {exc}")
             return {'CANCELLED'}
@@ -50,7 +51,9 @@ class QR_OT_build_sprint6(Operator):
             (
                 f"Generated {stats['objects']} mesh objects, "
                 f"{stats['vertices']} vertices and "
-                f"{stats['polygons']} polygons"
+                f"{stats['polygons']} polygons; "
+                f"arm length {getattr(registry, 'effective_arm_length', 0.0):.2f}; "
+                f"{len(warnings)} warning(s)"
             ),
         )
         return {'FINISHED'}

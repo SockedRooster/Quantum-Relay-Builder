@@ -1,4 +1,4 @@
-VERSION = (2, 0, 0)
+VERSION = (2, 0, 1)
 VERSION_STRING = ".".join(str(part) for part in VERSION)
-SPRINT = "Sprint 6.0"
+SPRINT = "Sprint 6.1"
 BUILD_LABEL = f"Quantum Relay Builder v{VERSION_STRING} - {SPRINT}"
