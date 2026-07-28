@@ -14,7 +14,12 @@ class QR_PT_builder(Panel):
         props = context.scene.qr_builder
 
         layout.label(text=BUILD_LABEL)
-        layout.label(text="Structural integration milestone", icon='MOD_ARRAY')
+        layout.label(text="BMesh framework milestone", icon='MESH_DATA')
+
+        family = layout.box()
+        family.label(text="Relay Family")
+        family.prop(props, "preset")
+        family.operator("qr.apply_preset", icon='PRESET')
 
         reflector = layout.box()
         reflector.label(text="Reflector")
@@ -57,42 +62,40 @@ class QR_PT_builder(Panel):
         column.prop(props, "arm_width_outer")
         column.prop(props, "arm_thickness")
         column.prop(props, "arm_gap")
-        column.prop(props, "rail_width")
-        column.prop(props, "rail_height")
         column.prop(props, "channel_width")
         column.prop(props, "channel_height")
 
         integration = layout.box()
         integration.label(text="Structure Detail")
-
         integration.prop(props, "generate_mounts")
-        mount_column = integration.column()
-        mount_column.enabled = props.generate_structure and props.generate_mounts
-        mount_column.prop(props, "mount_length")
-        mount_column.prop(props, "mount_width_scale")
-        mount_column.prop(props, "mount_height")
-        mount_column.prop(props, "clamp_height")
+        mounts = integration.column()
+        mounts.enabled = props.generate_structure and props.generate_mounts
+        mounts.prop(props, "mount_length")
+        mounts.prop(props, "mount_width_scale")
+        mounts.prop(props, "mount_height")
+        mounts.prop(props, "clamp_height")
 
         integration.separator()
         integration.prop(props, "generate_gussets")
-        gusset_column = integration.column()
-        gusset_column.enabled = props.generate_structure and props.generate_gussets
-        gusset_column.prop(props, "gusset_length")
-        gusset_column.prop(props, "gusset_height")
-        gusset_column.prop(props, "gusset_thickness")
+        gussets = integration.column()
+        gussets.enabled = props.generate_structure and props.generate_gussets
+        gussets.prop(props, "gusset_length")
+        gussets.prop(props, "gusset_height")
+        gussets.prop(props, "gusset_thickness")
 
         integration.separator()
         integration.prop(props, "generate_braces")
-        brace_column = integration.column()
-        brace_column.enabled = props.generate_structure and props.generate_braces
-        brace_column.prop(props, "brace_radius_scale")
-        brace_column.prop(props, "brace_width")
-        brace_column.prop(props, "brace_height")
+        braces = integration.column()
+        braces.enabled = props.generate_structure and props.generate_braces
+        braces.prop(props, "brace_profile")
+        braces.prop(props, "brace_radius_scale")
+        braces.prop(props, "brace_width")
+        braces.prop(props, "brace_height")
 
         detail = layout.box()
         detail.label(text="Global Detail")
         detail.prop(props, "bevel_width")
 
         layout.separator()
-        layout.operator("qr.build_sprint5", icon='MOD_BUILD')
+        layout.operator("qr.build_sprint6", icon='MOD_BUILD')
         layout.operator("qr.clear_generated", icon='TRASH')

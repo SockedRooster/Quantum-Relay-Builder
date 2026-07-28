@@ -1,26 +1,8 @@
 import math
 from mathutils import Vector
 
-from .meshbuilder import create_prism_mesh
+from ..mesh.beam import create_profile_beam
 from . import naming
-
-
-def _beam_rectangle(start, end, width, z):
-    direction = end - start
-    length = direction.length
-    if length <= 1.0e-6:
-        raise ValueError("Cross-brace endpoints are coincident")
-
-    direction.normalize()
-    tangent = Vector((-direction.y, direction.x, 0.0))
-    half_width = width / 2.0
-
-    return [
-        tuple(start + tangent * half_width)[:2] + (z,),
-        tuple(start - tangent * half_width)[:2] + (z,),
-        tuple(end - tangent * half_width)[:2] + (z,),
-        tuple(end + tangent * half_width)[:2] + (z,),
-    ]
 
 
 def create_cross_brace_array(
@@ -28,6 +10,7 @@ def create_cross_brace_array(
     origin,
     arm_count,
     brace_radius,
+    brace_profile,
     brace_width,
     brace_height,
     centre_z,
@@ -40,25 +23,24 @@ def create_cross_brace_array(
     for index in range(arm_count):
         angle = (2.0 * math.pi * index) / arm_count
         points.append(
-            Vector(origin)
-            + Vector((
-                math.cos(angle) * brace_radius,
-                math.sin(angle) * brace_radius,
-                0.0,
+            Vector((
+                origin.x + math.cos(angle) * brace_radius,
+                origin.y + math.sin(angle) * brace_radius,
+                centre_z,
             ))
         )
-
-    bottom_z = centre_z - (brace_height / 2.0)
-    top_z = centre_z + (brace_height / 2.0)
 
     for index, start in enumerate(points):
         end = points[(index + 1) % arm_count]
 
-        brace = create_prism_mesh(
+        brace = create_profile_beam(
             name=naming.brace(index + 1),
             collection=collection,
-            bottom_loop=_beam_rectangle(start, end, brace_width, bottom_z),
-            top_loop=_beam_rectangle(start, end, brace_width, top_z),
+            start=start,
+            end=end,
+            profile_id=brace_profile,
+            width=brace_width,
+            height=brace_height,
             bevel_width=min(bevel_width, brace_width * 0.18),
             material=material,
         )

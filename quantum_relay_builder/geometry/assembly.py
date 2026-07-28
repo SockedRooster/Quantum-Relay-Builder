@@ -197,6 +197,7 @@ def build_sprint5_assembly(context, props):
                 origin=support_origin,
                 arm_count=props.arm_count,
                 brace_radius=brace_radius,
+                brace_profile=props.brace_profile,
                 brace_width=props.brace_width,
                 brace_height=props.brace_height,
                 centre_z=support_origin.z,

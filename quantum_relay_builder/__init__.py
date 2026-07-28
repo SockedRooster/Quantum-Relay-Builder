@@ -1,10 +1,10 @@
 bl_info = {
     "name": "Quantum Relay Builder",
     "author": "SockedRooster / OpenAI",
-    "version": (1, 3, 2),
+    "version": (2, 0, 0),
     "blender": (5, 2, 0),
     "location": "3D Viewport > Sidebar > Quantum Relay",
-    "description": "Procedural modelling tools for Quantum Relay parts",
+    "description": "Procedural modelling framework for Quantum Relay parts",
     "category": "Add Mesh",
 }
 
@@ -12,7 +12,8 @@ import bpy
 
 from .properties import QRBuilderProperties
 from .operators import (
-    QR_OT_build_sprint5,
+    QR_OT_apply_preset,
+    QR_OT_build_sprint6,
     QR_OT_clear_generated,
 )
 from .ui import QR_PT_builder
@@ -20,7 +21,8 @@ from .ui import QR_PT_builder
 
 CLASSES = (
     QRBuilderProperties,
-    QR_OT_build_sprint5,
+    QR_OT_apply_preset,
+    QR_OT_build_sprint6,
     QR_OT_clear_generated,
     QR_PT_builder,
 )

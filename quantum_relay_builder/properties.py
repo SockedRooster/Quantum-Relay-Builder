@@ -1,8 +1,28 @@
-from bpy.props import BoolProperty, FloatProperty, IntProperty
+from bpy.props import BoolProperty, EnumProperty, FloatProperty, IntProperty
 from bpy.types import PropertyGroup
 
 
+PRESET_ITEMS = (
+    ("QR100", "QR-100", "Compact Pathfinder relay"),
+    ("QR250", "QR-250", "Medium Voyager relay"),
+    ("QR500", "QR-500", "Large Event Horizon relay"),
+    ("CUSTOM", "Custom", "Manually edited parameters"),
+)
+
+PROFILE_ITEMS = (
+    ("BOX", "Box Beam", "Rectangular solid beam"),
+    ("DIAMOND", "Diamond Beam", "Rotated rectangular beam"),
+    ("HEX", "Hex Beam", "Six-sided structural beam"),
+)
+
+
 class QRBuilderProperties(PropertyGroup):
+    preset: EnumProperty(
+        name="Relay Family",
+        items=PRESET_ITEMS,
+        default="QR100",
+    )
+
     reflector_rings: IntProperty(
         name="Reflector Rings",
         description="Hex-grid ring count; 1 creates 7 panels, 2 creates 19 panels",
@@ -10,379 +30,136 @@ class QRBuilderProperties(PropertyGroup):
         min=0,
         max=5,
     )
-
     panel_radius: FloatProperty(
-        name="Panel Radius",
-        description="Distance from panel centre to a hex corner",
-        default=1.24,
-        min=0.05,
-        soft_max=10.0,
-        unit='LENGTH',
+        name="Panel Radius", default=1.24, min=0.05, soft_max=10.0, unit='LENGTH'
     )
-
     panel_gap: FloatProperty(
-        name="Panel Gap",
-        description="Gap between neighbouring hex panels",
-        default=0.10,
-        min=0.0,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Panel Gap", default=0.10, min=0.0, soft_max=1.0, unit='LENGTH'
     )
-
     panel_thickness: FloatProperty(
-        name="Panel Thickness",
-        description="Thickness of the outer panel frame",
-        default=0.12,
-        min=0.01,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Panel Thickness", default=0.12, min=0.01, soft_max=1.0, unit='LENGTH'
     )
-
     panel_frame_width: FloatProperty(
-        name="Frame Width",
-        description="Width of the visible panel frame",
-        default=0.14,
-        min=0.01,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Frame Width", default=0.14, min=0.01, soft_max=1.0, unit='LENGTH'
     )
-
     reflector_inset: FloatProperty(
-        name="Reflector Inset",
-        description="Vertical recess of the reflective panel surface",
-        default=0.05,
-        min=0.0,
-        soft_max=0.5,
-        unit='LENGTH',
+        name="Reflector Inset", default=0.05, min=0.0, soft_max=0.5, unit='LENGTH'
     )
-
     reflector_thickness: FloatProperty(
-        name="Reflector Thickness",
-        description="Thickness of each reflective insert",
-        default=0.035,
-        min=0.005,
-        soft_max=0.5,
-        unit='LENGTH',
+        name="Reflector Thickness", default=0.035, min=0.005, soft_max=0.5, unit='LENGTH'
     )
-
     reflector_curvature: FloatProperty(
-        name="Curvature",
-        description="Parabolic dish curvature; zero produces a flat reflector",
-        default=0.022,
-        min=-0.5,
-        max=0.5,
+        name="Curvature", default=0.022, min=-0.5, max=0.5
     )
+    tilt_panels: BoolProperty(name="Aim Panels", default=True)
 
-    tilt_panels: BoolProperty(
-        name="Aim Panels",
-        description="Tilt panel normals along the dish surface",
-        default=True,
-    )
-
-    generate_edge_ring: BoolProperty(
-        name="Generate Edge Ring",
-        description="Create the segmented structural ring around the reflector",
-        default=True,
-    )
-
+    generate_edge_ring: BoolProperty(name="Generate Edge Ring", default=True)
     edge_ring_clearance: FloatProperty(
-        name="Ring Clearance",
-        description="Radial clearance between the reflector panels and structural ring",
-        default=0.18,
-        min=0.0,
-        soft_max=2.0,
-        unit='LENGTH',
+        name="Ring Clearance", default=0.18, min=0.0, soft_max=2.0, unit='LENGTH'
     )
-
     edge_ring_width: FloatProperty(
-        name="Ring Width",
-        description="Radial width of the structural edge ring",
-        default=0.26,
-        min=0.02,
-        soft_max=2.0,
-        unit='LENGTH',
+        name="Ring Width", default=0.26, min=0.02, soft_max=2.0, unit='LENGTH'
     )
-
     edge_ring_height: FloatProperty(
-        name="Ring Height",
-        description="Vertical thickness of each structural ring segment",
-        default=0.18,
-        min=0.02,
-        soft_max=2.0,
-        unit='LENGTH',
+        name="Ring Height", default=0.18, min=0.02, soft_max=2.0, unit='LENGTH'
     )
-
-    edge_ring_segments: IntProperty(
-        name="Ring Segments",
-        description="Number of structural segments around the edge ring",
-        default=12,
-        min=6,
-        max=96,
-    )
-
+    edge_ring_segments: IntProperty(name="Ring Segments", default=12, min=6, max=96)
     edge_ring_gap_angle: FloatProperty(
-        name="Joint Gap",
-        description="Angular gap between neighbouring edge-ring segments",
-        default=0.018,
-        min=0.0,
-        max=0.20,
-        subtype='ANGLE',
+        name="Joint Gap", default=0.018, min=0.0, max=0.20, subtype='ANGLE'
     )
-
     edge_ring_rib_width: FloatProperty(
-        name="Rib Width",
-        description="Tangential width of reinforcement ribs",
-        default=0.10,
-        min=0.01,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Rib Width", default=0.10, min=0.01, soft_max=1.0, unit='LENGTH'
     )
-
     edge_ring_rib_height: FloatProperty(
-        name="Rib Height",
-        description="Height added by the outer reinforcement ribs",
-        default=0.08,
-        min=0.0,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Rib Height", default=0.08, min=0.0, soft_max=1.0, unit='LENGTH'
     )
 
-    generate_structure: BoolProperty(
-        name="Generate Hub and Arms",
-        description="Include the support assembly",
-        default=True,
-    )
-
-    arm_count: IntProperty(
-        name="Arm Count",
-        description="Number of radial support arms",
-        default=6,
-        min=3,
-        max=24,
-    )
-
+    generate_structure: BoolProperty(name="Generate Hub and Arms", default=True)
+    arm_count: IntProperty(name="Arm Count", default=6, min=3, max=24)
     hub_radius: FloatProperty(
-        name="Hub Radius",
-        default=0.72,
-        min=0.05,
-        soft_max=5.0,
-        unit='LENGTH',
+        name="Hub Radius", default=0.72, min=0.05, soft_max=5.0, unit='LENGTH'
     )
-
     hub_height: FloatProperty(
-        name="Hub Height",
-        default=0.42,
-        min=0.03,
-        soft_max=5.0,
-        unit='LENGTH',
+        name="Hub Height", default=0.42, min=0.03, soft_max=5.0, unit='LENGTH'
     )
-
     hub_ring_height: FloatProperty(
-        name="Hub Ring Height",
-        default=0.15,
-        min=0.01,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Hub Ring Height", default=0.15, min=0.01, soft_max=1.0, unit='LENGTH'
     )
-
     core_radius: FloatProperty(
-        name="Core Radius",
-        default=0.28,
-        min=0.03,
-        soft_max=2.0,
-        unit='LENGTH',
+        name="Core Radius", default=0.28, min=0.03, soft_max=2.0, unit='LENGTH'
     )
-
     core_height: FloatProperty(
-        name="Core Height",
-        default=0.20,
-        min=0.02,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Core Height", default=0.20, min=0.02, soft_max=1.0, unit='LENGTH'
     )
-
     arm_length: FloatProperty(
-        name="Arm Length",
-        default=4.80,
-        min=0.10,
-        soft_max=30.0,
-        unit='LENGTH',
+        name="Arm Length", default=4.80, min=0.10, soft_max=30.0, unit='LENGTH'
     )
-
     arm_width_hub: FloatProperty(
-        name="Width at Hub",
-        default=0.34,
-        min=0.03,
-        soft_max=3.0,
-        unit='LENGTH',
+        name="Width at Hub", default=0.34, min=0.03, soft_max=3.0, unit='LENGTH'
     )
-
     arm_width_outer: FloatProperty(
-        name="Width at Outer End",
-        default=0.54,
-        min=0.03,
-        soft_max=3.0,
-        unit='LENGTH',
+        name="Width at Outer End", default=0.54, min=0.03, soft_max=3.0, unit='LENGTH'
     )
-
     arm_thickness: FloatProperty(
-        name="Arm Thickness",
-        default=0.18,
-        min=0.02,
-        soft_max=2.0,
-        unit='LENGTH',
+        name="Arm Thickness", default=0.18, min=0.02, soft_max=2.0, unit='LENGTH'
     )
-
     arm_gap: FloatProperty(
-        name="Hub Gap",
-        default=0.05,
-        min=0.0,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Hub Gap", default=0.05, min=0.0, soft_max=1.0, unit='LENGTH'
     )
-
     rail_width: FloatProperty(
-        name="Rail Width",
-        default=0.085,
-        min=0.01,
-        soft_max=0.5,
-        unit='LENGTH',
+        name="Rail Width", default=0.085, min=0.01, soft_max=0.5, unit='LENGTH'
     )
-
     rail_height: FloatProperty(
-        name="Rail Height",
-        default=0.07,
-        min=0.005,
-        soft_max=0.5,
-        unit='LENGTH',
+        name="Rail Height", default=0.07, min=0.005, soft_max=0.5, unit='LENGTH'
     )
-
     channel_width: FloatProperty(
-        name="Channel Width",
-        default=0.14,
-        min=0.02,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Channel Width", default=0.14, min=0.02, soft_max=1.0, unit='LENGTH'
     )
-
     channel_height: FloatProperty(
-        name="Channel Height",
-        default=0.025,
-        min=0.002,
-        soft_max=0.2,
-        unit='LENGTH',
+        name="Channel Height", default=0.025, min=0.002, soft_max=0.2, unit='LENGTH'
     )
 
-    generate_mounts: BoolProperty(
-        name="Mount Blocks",
-        description="Create arm-to-ring mounting blocks and upper clamps",
-        default=True,
-    )
-
+    generate_mounts: BoolProperty(name="Mount Blocks", default=True)
     mount_length: FloatProperty(
-        name="Mount Length",
-        description="Radial length of each arm-end mounting block",
-        default=0.42,
-        min=0.05,
-        soft_max=2.0,
-        unit='LENGTH',
+        name="Mount Length", default=0.42, min=0.05, soft_max=2.0, unit='LENGTH'
     )
-
     mount_width_scale: FloatProperty(
-        name="Mount Width Scale",
-        description="Mount width relative to the arm's outer width",
-        default=1.28,
-        min=0.5,
-        max=3.0,
+        name="Mount Width Scale", default=1.28, min=0.5, max=3.0
     )
-
     mount_height: FloatProperty(
-        name="Mount Height",
-        description="Height of the lower mounting block",
-        default=0.24,
-        min=0.03,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Mount Height", default=0.24, min=0.03, soft_max=1.0, unit='LENGTH'
     )
-
     clamp_height: FloatProperty(
-        name="Clamp Height",
-        description="Height of the upper ring clamp",
-        default=0.10,
-        min=0.01,
-        soft_max=0.5,
-        unit='LENGTH',
+        name="Clamp Height", default=0.10, min=0.01, soft_max=0.5, unit='LENGTH'
     )
 
-    generate_gussets: BoolProperty(
-        name="Gussets",
-        description="Create paired triangular reinforcement gussets",
-        default=True,
-    )
-
+    generate_gussets: BoolProperty(name="Gussets", default=True)
     gusset_length: FloatProperty(
-        name="Gusset Length",
-        description="Distance the gussets extend inward along the support arm",
-        default=0.62,
-        min=0.05,
-        soft_max=3.0,
-        unit='LENGTH',
+        name="Gusset Length", default=0.62, min=0.05, soft_max=3.0, unit='LENGTH'
     )
-
     gusset_height: FloatProperty(
-        name="Gusset Height",
-        description="Vertical rise of each triangular gusset",
-        default=0.25,
-        min=0.02,
-        soft_max=2.0,
-        unit='LENGTH',
+        name="Gusset Height", default=0.25, min=0.02, soft_max=2.0, unit='LENGTH'
     )
-
     gusset_thickness: FloatProperty(
-        name="Gusset Thickness",
-        description="Tangential thickness of each gusset plate",
-        default=0.07,
-        min=0.01,
-        soft_max=0.5,
-        unit='LENGTH',
+        name="Gusset Thickness", default=0.07, min=0.01, soft_max=0.5, unit='LENGTH'
     )
 
-    generate_braces: BoolProperty(
-        name="Cross Braces",
-        description="Create a polygon of braces between neighbouring support arms",
-        default=True,
+    generate_braces: BoolProperty(name="Cross Braces", default=True)
+    brace_profile: EnumProperty(
+        name="Brace Profile",
+        items=PROFILE_ITEMS,
+        default="HEX",
     )
-
     brace_radius_scale: FloatProperty(
-        name="Brace Radius",
-        description="Brace ring radius as a fraction of support-arm length",
-        default=0.58,
-        min=0.15,
-        max=0.95,
+        name="Brace Radius", default=0.58, min=0.15, max=0.95
     )
-
     brace_width: FloatProperty(
-        name="Brace Width",
-        description="Horizontal width of each cross brace",
-        default=0.10,
-        min=0.01,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Brace Width", default=0.10, min=0.01, soft_max=1.0, unit='LENGTH'
     )
-
     brace_height: FloatProperty(
-        name="Brace Height",
-        description="Vertical thickness of each cross brace",
-        default=0.10,
-        min=0.01,
-        soft_max=1.0,
-        unit='LENGTH',
+        name="Brace Height", default=0.10, min=0.01, soft_max=1.0, unit='LENGTH'
     )
 
     bevel_width: FloatProperty(
-        name="Bevel Width",
-        default=0.035,
-        min=0.0,
-        soft_max=0.25,
-        unit='LENGTH',
+        name="Bevel Width", default=0.035, min=0.0, soft_max=0.25, unit='LENGTH'
     )
