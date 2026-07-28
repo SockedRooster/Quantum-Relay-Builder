@@ -40,9 +40,12 @@ class QR_OT_build_sprint6(Operator):
         props = context.scene.qr_builder
 
         try:
-            expected_beam_length = max(
-                props.arm_length,
-                props.panel_radius * (props.reflector_rings * 2 + 3),
+            # Diagnostics use reflector dimensions rather than the obsolete
+            # free-form arm length setting.
+            expected_beam_length = (
+                props.panel_radius * (props.reflector_rings * 2 + 3)
+                + props.edge_ring_clearance
+                + props.edge_ring_width
             ) * props.diagnostic_length_multiplier
             configure(props.diagnostic_logging, expected_beam_length)
             registry = build_sprint5_assembly(context, props)

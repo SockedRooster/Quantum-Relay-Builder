@@ -57,11 +57,12 @@ class QR_PT_builder(Panel):
         column.prop(props, "hub_ring_height")
         column.prop(props, "core_radius")
         column.prop(props, "core_height")
-        column.prop(props, "arm_length")
+        column.label(text="Arm length: derived from support ring", icon='DRIVER_DISTANCE')
         column.prop(props, "arm_width_hub")
         column.prop(props, "arm_width_outer")
         column.prop(props, "arm_thickness")
         column.prop(props, "arm_gap")
+        column.prop(props, "arm_ring_clearance")
         column.prop(props, "channel_width")
         column.prop(props, "channel_height")
 

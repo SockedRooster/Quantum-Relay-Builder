@@ -9,6 +9,9 @@ class PartRegistry:
         self._by_name = {}
 
     def add(self, category, obj):
+        obj["quantum_relay_generated"] = True
+        obj["quantum_relay_category"] = category
+
         if obj.name in self._by_name:
             raise ValueError(f"Duplicate generated object name: {obj.name}")
 

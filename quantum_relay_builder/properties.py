@@ -92,7 +92,13 @@ class QRBuilderProperties(PropertyGroup):
         name="Core Height", default=0.20, min=0.02, soft_max=1.0, unit='LENGTH'
     )
     arm_length: FloatProperty(
-        name="Arm Length", default=4.80, min=0.10, soft_max=30.0, unit='LENGTH'
+        name="Legacy Arm Length",
+        description="Retained for preset compatibility; support length is now derived from the ring",
+        default=4.80,
+        min=0.10,
+        soft_max=30.0,
+        unit='LENGTH',
+        options={'HIDDEN'},
     )
     arm_width_hub: FloatProperty(
         name="Width at Hub", default=0.34, min=0.03, soft_max=3.0, unit='LENGTH'
@@ -105,6 +111,14 @@ class QRBuilderProperties(PropertyGroup):
     )
     arm_gap: FloatProperty(
         name="Hub Gap", default=0.05, min=0.0, soft_max=1.0, unit='LENGTH'
+    )
+    arm_ring_clearance: FloatProperty(
+        name="Arm Ring Clearance",
+        description="Vertical clearance above the edge ring at the arm attachment",
+        default=0.08,
+        min=0.0,
+        soft_max=1.0,
+        unit='LENGTH',
     )
     rail_width: FloatProperty(
         name="Rail Width", default=0.085, min=0.01, soft_max=0.5, unit='LENGTH'

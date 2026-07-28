@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.0.4 — Sprint 6.1.3
+
+- Added global stale generated-object cleanup.
+- Added duplicate generated-collection cleanup.
+- Added one authoritative support attachment calculation.
+- Locked arm endpoints to the actual structural-ring midline.
+- Added strict radius checks before geometry generation.
+- Expanded diagnostic radius reporting.
+- Hid the obsolete free-form arm-length control.
+
+## 2.0.3 — Sprint 6.1.2
+
+- Rebuilt support arms as tapered, sloped structural prisms.
+- Anchored every arm directly between the hub and calculated ring mount radius.
+- Added configurable arm-to-ring vertical clearance.
+- Raised arm endpoints to the structural ring instead of leaving them flat beneath the dish.
+- Updated mounts and gussets to align with the new outer arm height.
+- Added support-arm centre-line diagnostics.
+
 ## 2.0.2 — Sprint 6.1.1
 
 - Built directly from the stable Sprint 6.1 source.

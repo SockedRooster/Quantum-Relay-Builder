@@ -17,6 +17,7 @@ from .mounts import create_mount_array
 from .gussets import create_gusset_array
 from .braces import create_cross_brace_array
 from .validation import validate_generated_assembly
+from .support_geometry import calculate_support_attachment
 from .naming import ROOT
 from ..diagnostics import log_object, write_report
 
@@ -75,18 +76,32 @@ def build_sprint5_assembly(context, props):
 
     if props.generate_structure:
         support_origin = cursor + Vector((0.0, 0.0, -(props.panel_thickness / 2.0) - (props.hub_height / 2.0) - 0.10))
-        arm_start_radius = props.hub_radius + props.arm_gap
+
+        support_metrics = calculate_support_attachment(
+            reflector_outer_radius=reflector_metrics["outer_radius"],
+            ring_metrics=ring_metrics,
+            hub_radius=props.hub_radius,
+            hub_gap=props.arm_gap,
+        )
+        arm_start_radius = support_metrics["arm_start_radius"]
+        mount_radius = support_metrics["attachment_radius"]
+        effective_arm_length = support_metrics["effective_arm_length"]
 
         if ring_metrics is not None:
-            mount_radius = (ring_metrics["inner_radius"] + ring_metrics["outer_radius"]) / 2.0
             ring_top_z = cursor.z + (props.edge_ring_height / 2.0)
-            expected_radius = ring_metrics["outer_radius"] + props.mount_length
         else:
-            mount_radius = reflector_metrics["outer_radius"]
             ring_top_z = cursor.z
-            expected_radius = mount_radius + props.mount_length
 
-        effective_arm_length = max(0.05, mount_radius - arm_start_radius)
+        expected_radius = support_metrics["structural_outer_radius"] + props.mount_length
+
+        # Fail loudly rather than generating another visually misleading build.
+        if mount_radius > expected_radius:
+            raise ValueError(
+                f"Support attachment radius {mount_radius:.3f} exceeds "
+                f"expected assembly radius {expected_radius:.3f}"
+            )
+        arm_near_centre_z = support_origin.z + (props.hub_height / 2.0)
+        arm_far_centre_z = ring_top_z + props.arm_ring_clearance + (props.arm_thickness / 2.0)
 
         registry.extend("hub", create_layered_hub(
             collection, support_origin, props.hub_radius, props.hub_height,
@@ -96,13 +111,14 @@ def build_sprint5_assembly(context, props):
 
         registry.extend("arm", create_detailed_arm_array(
             collection, support_origin, props.arm_count, props.hub_radius,
-            props.arm_gap, effective_arm_length, props.arm_width_hub,
+            props.arm_gap, mount_radius, props.arm_width_hub,
             props.arm_width_outer, props.arm_thickness, props.rail_width,
             props.rail_height, props.channel_width, props.channel_height,
             props.bevel_width, titanium, dark, energy,
+            arm_near_centre_z, arm_far_centre_z,
         ))
 
-        arm_top_z = support_origin.z + (props.arm_thickness / 2.0)
+        arm_top_z = arm_far_centre_z + (props.arm_thickness / 2.0)
         mount_width = props.arm_width_outer * props.mount_width_scale
 
         if props.generate_mounts:
@@ -147,10 +163,18 @@ def build_sprint5_assembly(context, props):
         log_object(generated_object, root)
 
     registry.diagnostic_log_path = write_report({
-        "version": "2.0.2",
-        "sprint": "6.1.1",
+        "version": "2.0.4",
+        "sprint": "6.1.3",
         "expected_radius": float(expected_radius),
         "effective_arm_length": float(registry.effective_arm_length),
+        "arm_start_radius": float(locals().get("arm_start_radius", 0.0)),
+        "arm_attachment_radius": float(locals().get("mount_radius", 0.0)),
+        "support_radius_source": locals().get("support_metrics", {}).get("source", ""),
+        "reflector_outer_radius": float(reflector_metrics["outer_radius"]),
+        "ring_inner_radius": float(ring_metrics["inner_radius"]) if ring_metrics else None,
+        "ring_outer_radius": float(ring_metrics["outer_radius"]) if ring_metrics else None,
+        "arm_near_centre_z": float(locals().get("arm_near_centre_z", 0.0)),
+        "arm_far_centre_z": float(locals().get("arm_far_centre_z", 0.0)),
         "object_count": len(registry.all_objects()),
         "warnings": list(warnings),
         "cursor": [float(value) for value in cursor],
